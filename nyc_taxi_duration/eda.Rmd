@@ -1,0 +1,90 @@
+---
+title: "EDA for NYC Taxi Trip Duration Kaggle's competition"
+author: Ian Castillo
+output: 
+    html_document:
+        toc: true
+        theme: paper
+---
+
+This _R notebook_ is aimed to explore the data provided in Kaggle's competition [NYC Taxi Trip Duration](https://www.kaggle.com/c/nyc-taxi-trip-duration). Data can be downloaded [here](https://www.kaggle.com/c/nyc-taxi-trip-duration/data).
+
+# 0. About the competition
+_NYC Taxi Trip duration_ competition encourage analysts to predict the total ride duration of a taxi trip in New York City. The data supplied by the _NYC Taxi and Limousine Commission_ consists of several variables related with the taxi company, the passengers and the ride. To support your analysis, Kaggle invites you to add external data related with any factor you consider can affect the duration of a taxi ride. [Here](https://www.kaggle.com/c/nyc-taxi-trip-duration#Prizes) you can find more information about the **prizes** that you can win contributing with more data.
+
+# 1. Load and first exploration for data
+## 1.1 Load libraries
+```{r libraries, echo=TRUE, message=FALSE, warning=FALSE}
+library(readr)
+library(dplyr)
+```
+
+## About the data
+Data fields descriptions are explained [here](https://www.kaggle.com/c/nyc-taxi-trip-duration/data).
+
+* id - a unique identifier for each trip
+* vendor_id - a code indicating the provider associated with the trip record
+* pickup_datetime - date and time when the meter was engaged
+* dropoff_datetime - date and time when the meter was disengaged
+* passenger_count - the number of passengers in the vehicle (driver entered value)
+* pickup_longitude - the longitude where the meter was engaged
+* pickup_latitude - the latitude where the meter was engaged
+* dropoff_longitude - the longitude where the meter was disengaged
+* dropoff_latitude - the latitude where the meter was disengaged
+* store_and_fwd_flag - This flag indicates whether the trip record was held in vehicle memory before sending to the vendor because the vehicle did not have a connection to the server - Y=store and forward; N=not a store and forward trip
+* trip_duration - duration of the trip in seconds
+
+**Disclaimer**: The decision was made to not remove dropoff coordinates from the dataset order to provide an expanded set of variables to use in Kernels. As this is a playground competition, we expect you to play fairly in the spirit of collaboration and fun.
+
+Now, we can load data with the respective variable type and explore the variables in there.
+
+```{r load, message=FALSE, warning=FALSE, include=FALSE}
+train_data <- read_csv(file = 'data/train.csv', 
+                       col_types = cols(id = col_character(), 
+                                        vendor_id = col_character(), 
+                                        pickup_datetime = col_datetime(), 
+                                        dropoff_datetime = col_datetime(), 
+                                        passenger_count = col_integer(), 
+                                        pickup_longitude = col_number(), 
+                                        pickup_latitude = col_number(), 
+                                        dropoff_longitude = col_number(), 
+                                        dropoff_latitude = col_number(), 
+                                        store_and_fwd_flag = col_factor(levels = c('Y', 'N')),
+                                        # store_and_fwd_flag's type is known by description
+                                        trip_duration = col_integer()
+                       ))
+```
+
+```{r summary, echo=FALSE, message=FALSE, warning=FALSE}
+summary(train_data)
+```
+
+As we know, *vendor_id* is an identifier for the provider associated with the trip record. So we can change the variable type to factor in order to work better with this variable. Let's find out how many vendors do the rides are associated with.
+
+```{r vendors, echo=FALSE, message=FALSE, warning=FALSE}
+table(train_data$vendor_id)
+```
+
+The data only comes from `r length(unique(train_data$vendor_id))` *vendors*, so we can turn the variable into factors.
+
+```{r vendor_factor, message=FALSE, warning=FALSE, include=FALSE}
+train_data <- train_data %>%
+    mutate(vendor_id = factor(vendor_id))
+```
+
+# 2. The variables
+As far as we know, the variables:
+
+* Rides: There are **1,458,644** rides in the training set.
+* Vendors: Only **two** vendors are associated with the rides.
+* Pick ups and drop offs: The rides were made from **01-01-2016** until **07-01-2016**.
+* Passengers: The median number of passengers is **one** and the maximum is **9**.
+* Information stored for later: Only **`r round(100*8045/1450599, 2)`%** of the trip records was held in vehicle memory before sending to the vendor.
+* Duration of ride: The mean duration of the trip is **`r round(959/60, 2)`** minutes.
+
+About the previous information we say that:
+
+
+# 3. Exploratory analysis
+
+
