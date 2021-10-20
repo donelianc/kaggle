@@ -231,7 +231,7 @@ man_pages = [
 texinfo_documents = [
     ('index', 'titanic', u'titanic-kaggle-competition Documentation',
      u"Ian Castillo (donelianc)", 'titanic-kaggle-competition',
-     'Repository hosting Kaggle's getting started competiton. ', 'Miscellaneous'),
+     'Repository hosting Kaggle getting started competiton. ', 'Miscellaneous'),
 ]
 
 # Documents to append as an appendix to all manuals.

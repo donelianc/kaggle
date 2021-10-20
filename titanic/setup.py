@@ -4,7 +4,7 @@ setup(
     name='src',
     packages=find_packages(),
     version='0.1.0',
-    description='Repository hosting Kaggle's getting started competiton. ',
+    description='Repository hosting Kaggle getting started competiton. ',
     author='Ian Castillo (donelianc)',
     license='MIT',
 )
