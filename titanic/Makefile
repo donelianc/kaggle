@@ -25,6 +25,14 @@ requirements: test_environment
 	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
 
+## Dowloand Data from Kaggle
+download_data:
+	mkdir -p data/raw
+	rm data/raw/*.csv
+	kaggle competitions download -c titanic -p data/raw/
+	unzip -a data/raw/titanic.zip -d data/raw/
+	rm data/raw/titanic.zip
+
 ## Make Dataset
 data: requirements
 	$(PYTHON_INTERPRETER) src/data/make_dataset.py data/raw data/processed
